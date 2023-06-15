@@ -1,37 +1,44 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 function App() {
   return (
     <>
       <h1>Stateful List</h1>
-      <ListDemo/>
+      <ListDemo />
     </>
   );
-   
 }
 
-function ListDemo(){
-  let [list,setList]=useState(["delhi"]);
-  
+function ListDemo() {
+  let inputRef = useRef();
+  let [list, setList] = useState(["delhi"]);
 
-  let addItamAction=()=>{
-    let inputRef = document.querySelector("#id1");
-    let inputValue = inputRef.value;
+  let addItemAction = () => {
+    // console.log(inputRef.current);
+    // console.log(document.querySelector("#id1"));
 
-
-    let newList=[...list,"mumbai"];
-    console.log(newList);
+    let inputValue = inputRef.current.value;
+    let newList = [inputValue, ...list];
     setList(newList);
-  };
- 
-    return(
-      <>
-        <input type="text" id="id1" placeholder="enter input" />
-        <input type="button" value="Add New Item" onClick={addItamAction} />
 
-        {list.map((item)=> (<h1>hello {item}</h1>) )}
-      </>
-    );
+    inputRef.current.value = "";
+  };
+
+  return (
+    <>
+      <input
+        type="text"
+        id="id1"
+        ref={inputRef}
+        placeholder="Enter user input..."
+      />
+      <input type="button" value="Add New Item" onClick={addItemAction} />
+
+      {list.map((item) => (
+        <h1>{item}</h1>
+      ))}
+    </>
+  );
 }
 
 export default App;
